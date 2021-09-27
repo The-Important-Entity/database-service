@@ -74,6 +74,13 @@ const run_tests = async function(tester, requester) {
     info = "Test DELETE security group when organization exists and no security groups exist";
     tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true)
 
+    res = await requester.put("http://localhost:6000/security_group", {
+        "group_id": 1,
+        "alias": "newgroup1234"
+    });
+    info = "Test PUT security group when organization exists and security groups doesnt exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true)
+
     res = await requester.post("http://localhost:6000/security_group", {
         "org_id": 1,
         "alias": "newgroup"
@@ -88,6 +95,10 @@ const run_tests = async function(tester, requester) {
     info = "Test PUT security group when organization exists and security groups exists";
     tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{"id": 1,"org_id": 1,"alias": "newgroup1234"}]), true)
 
+    res = await requester.delete("http://localhost:6000/security_group/1");
+    info = "Test DELETE security group when organization exists and security group exists";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{"id": 1,"org_id": 1,"alias": "newgroup1234"}]), true)
+    
     res = await requester.delete("http://localhost:6000/organization/tech-solutions");
     info = "Test DELETE organization when organization exists";
     tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{id: 1, name: 'tech-solutions'}]), true)

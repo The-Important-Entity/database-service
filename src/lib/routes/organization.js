@@ -8,6 +8,10 @@ const getOrganization = async function(req, res){
         return;
     }
     const response = await this.dbconn.getOrganization(name);
+    if (response.code) {
+        res.status(500).send(this.processErrorCode(response.code));
+        return;
+    }
     res.status(200).send(response);
 };
 

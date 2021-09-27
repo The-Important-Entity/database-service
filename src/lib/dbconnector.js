@@ -43,10 +43,6 @@ class DBConnector {
     async getAllSecurityGroups(org_id) {
         return await this.makeQuery("SELECT * FROM organization.security_groups where organization.security_groups.org_id=$1", [org_id]);
     }
-    
-    // async getSecurityGroup(id) {
-    //     return await this.makeQuery("SELECT * FROM organization.security_groups WHERE organization.security_groups.id=$1", [id]);
-    // }
 
     async postSecurityGroup(org_id, alias) {
         return await this.makeQuery("INSERT INTO organization.security_groups(org_id, alias) VALUES ($1, $2) RETURNING *", [org_id, alias]);
@@ -65,15 +61,15 @@ class DBConnector {
     }
 
     async postSecurityPerm(group_id, namespace, read_perm, write_perm) {
-        return await this.makeQuery("INSERT INTO organization.security_perms(group_id, namespace, read_perm, write_perm) VALUES ($1, $2, $3, $4)", [group_id, namespace, read_perm, write_perm]);
+        return await this.makeQuery("INSERT INTO organization.security_perms(group_id, namespace, read_perm, write_perm) VALUES ($1, $2, $3, $4) RETURNING *", [group_id, namespace, read_perm, write_perm]);
     }
 
     async updateSecurityPerm(group_id, namespace, read_perm, write_perm) {
-        return await this.makeQuery("UPDATE organization.security_perms SET organization.security_perms.namespace=$2, organization.security_perms.read_perm=$3, organization.security_perms.write_perm=$4 WHERE organization.security_perms.group_id=$1", [group_id, namespace, read_perm, write_perm]);
+        return await this.makeQuery("UPDATE organization.security_perms SET organization.security_perms.namespace=$2, organization.security_perms.read_perm=$3, organization.security_perms.write_perm=$4 WHERE organization.security_perms.id=$1 RETURNING *", [id, namespace, read_perm, write_perm]);
     }
 
     async deleteSecurityPerm(id) {
-        return await this.makeQuery("DELETE FROM organization.security_perms WHERE organization.security_perms.id=$1", [id]);
+        return await this.makeQuery("DELETE FROM organization.security_perms WHERE organization.security_perms.id=$1 RETURNING *", [id]);
     }
 
     async getAllNamespaces(org_id) {
@@ -85,11 +81,23 @@ class DBConnector {
     }
 
     async deleteNamespace(name) {
-        return await this.makeQuery("DELETE FROM organization.namespaces WHERE organization.namespaces.name=$1", [name]);
+        return await this.makeQuery("DELETE FROM organization.namespaces WHERE organization.namespaces.name=$1 RETURNING *", [name]);
     }
 
-    async getAccessKeys() {
-        return;
+    async getAccessKeys(group_id) {
+        return await this.makeQuery("SELECT organization.access_keys.id, organization.access_keys.group_id, organization.access_keys.app_id FROM organization.access_keys WHERE organization.access_keys.group_id=$1", [group_id]);
+    }
+
+    async getSecret(app_id, namespace) {
+        return await this.makeQuery("SELECT organization.access_keys.group_id,organization.access_keys.secret, organization.security_perms.read_perm, organization.security_perms.write_perm FROM organization.access_keys, organization.security_perms WHERE organization.access_keys.app_id=$1 AND organization.access_keys.group_id=organization.security_perms.group_id AND organization.security_perms.namespace=$2", [app_id, namespace]);
+    }
+
+    async postAccessKey(group_id, app_id, secret) {
+        return await this.makeQuery("INSERT INTO organization.access_keys(group_id, app_id, secret) VALUES($1, $2, $3) RETURNING *", [group_id, app_id, secret]);
+    }
+
+    async deleteAccessKey(app_id) {
+        return await this.makeQuery("DELETE FROM organization.access_keys WHERE organization.access_keys.app_id=$1 RETURNING *", [app_id]);
     }
 
     close(){
