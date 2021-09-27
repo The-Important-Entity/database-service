@@ -5,6 +5,7 @@ const getSecurityPerms = async function(req, res){
         res.status(400).send({
             "error": "missing group id in request params"
         });
+        return;
     }
 
     const response = await this.dbconn.getSecurityPerms(group_id);
@@ -25,6 +26,7 @@ const postSecurityPerm = async function(req, res){
         res.status(400).send({
             "error": "missing permissions data in request body"
         });
+        return;
     }
     const response = await this.dbconn.postSecurityPerm(group_id, namespace, read_perm, write_perm);
     if (response.code) {
@@ -40,10 +42,11 @@ const updateSecurityPerm = async function(req, res){
     const read_perm = req.body.read_perm;
     const write_perm = req.body.write_perm;
 
-    if (!id || !namespace || !read_perm || !write_perm) {
+    if (!id || !namespace || !Number.isInteger(read_perm) || !Number.isInteger(write_perm)) {
         res.status(400).send({
             "error": "missing permissions data in request body"
         });
+        return;
     }
     const response = await this.dbconn.updateSecurityPerm(id, namespace, read_perm, write_perm);
     if (response.code) {
@@ -59,6 +62,7 @@ const deleteSecurityPerm = async function(req, res){
         res.status(400).send({
             "error": "missing group id in request params"
         });
+        return;
     }
 
     const response = await this.dbconn.deleteSecurityPerm(id);

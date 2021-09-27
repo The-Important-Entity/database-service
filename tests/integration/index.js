@@ -95,6 +95,93 @@ const run_tests = async function(tester, requester) {
     info = "Test PUT security group when organization exists and security groups exists";
     tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{"id": 1,"org_id": 1,"alias": "newgroup1234"}]), true)
 
+    res = await requester.get("http://localhost:6000/security_perm/1")
+    info = "Test GET security perms when no security perms exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true);
+
+    res = await requester.put("http://localhost:6000/security_perm", {
+        "id": 1,
+        "namespace": "joe-namespace",
+        "read_perm": 1,
+        "write_perm": 1
+    })
+    info = "Test PUT security perms when no security perms exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true);
+
+    res = await requester.delete("http://localhost:6000/security_perm/1")
+    info = "Test DELETE security perms when no security perms exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true);
+
+    res = await requester.post("http://localhost:6000/security_perm", {
+        "group_id": 1,
+        "namespace": "joe-namespace",
+        "read_perm": 1,
+        "write_perm": 1
+    })
+    info = "Test POST security perms when no security perms exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "id": 1,
+        "group_id": 1,
+        "namespace": "joe-namespace",
+        "read_perm": 1,
+        "write_perm": 1
+    }]), true);
+
+
+    res = await requester.get("http://localhost:6000/security_perm/1")
+    info = "Test GET security perms when security perms exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "id": 1,
+        "group_id": 1,
+        "namespace": "joe-namespace",
+        "read_perm": 1,
+        "write_perm": 1
+    }]), true);
+
+    res = await requester.put("http://localhost:6000/security_perm", {
+        "id": 1,
+        "namespace": "joe-namespace",
+        "read_perm": 0,
+        "write_perm": 1
+    })
+    info = "Test PUT security perms when security perms exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "id": 1,
+        "group_id": 1,
+        "namespace": "joe-namespace",
+        "read_perm": 0,
+        "write_perm": 1
+    }]), true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    res = await requester.delete("http://localhost:6000/security_perm/1")
+    info = "Test DELETE security perms when security perms exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "id": 1,
+        "group_id": 1,
+        "namespace": "joe-namespace",
+        "read_perm": 0,
+        "write_perm": 1
+    }]), true);
+
     res = await requester.delete("http://localhost:6000/security_group/1");
     info = "Test DELETE security group when organization exists and security group exists";
     tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{"id": 1,"org_id": 1,"alias": "newgroup1234"}]), true)

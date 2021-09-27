@@ -25,10 +25,10 @@ class Router {
         this.app.put("/security_group", updateSecurityGroup.bind(this));
         this.app.delete("/security_group/:id", deleteSecurityGroup.bind(this));
 
-        this.app.get("/security_perm", getSecurityPerms.bind(this));
+        this.app.get("/security_perm/:group_id", getSecurityPerms.bind(this));
         this.app.post("/security_perm", postSecurityPerm.bind(this));
         this.app.put("/security_perm", updateSecurityPerm.bind(this));
-        this.app.delete("/security_perm", deleteSecurityPerm.bind(this));
+        this.app.delete("/security_perm/:id", deleteSecurityPerm.bind(this));
 
         this.app.get("/namespace/:org_id", getAllNamespaces.bind(this));
         this.app.post("/namespace", postNamespace.bind(this));

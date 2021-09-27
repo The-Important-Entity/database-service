@@ -64,8 +64,8 @@ class DBConnector {
         return await this.makeQuery("INSERT INTO organization.security_perms(group_id, namespace, read_perm, write_perm) VALUES ($1, $2, $3, $4) RETURNING *", [group_id, namespace, read_perm, write_perm]);
     }
 
-    async updateSecurityPerm(group_id, namespace, read_perm, write_perm) {
-        return await this.makeQuery("UPDATE organization.security_perms SET organization.security_perms.namespace=$2, organization.security_perms.read_perm=$3, organization.security_perms.write_perm=$4 WHERE organization.security_perms.id=$1 RETURNING *", [id, namespace, read_perm, write_perm]);
+    async updateSecurityPerm(id, namespace, read_perm, write_perm) {
+        return await this.makeQuery("UPDATE organization.security_perms SET namespace=$2, read_perm=$3, write_perm=$4 WHERE organization.security_perms.id=$1 RETURNING *", [id, namespace, read_perm, write_perm]);
     }
 
     async deleteSecurityPerm(id) {

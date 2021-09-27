@@ -8,6 +8,7 @@ const getSecret = async function(req, res) {
         res.status(400).send({
             "error": "missing app_id or namespace in request body"
         });
+        return;
     }
     const response = await this.dbconn.getSecret(app_id, namespace);
     if (response.code) {
@@ -23,6 +24,7 @@ const getAccessKeys = async function(req, res) {
         res.status(400).send({
             "error": "missing group id in request body"
         });
+        return;
     }
 
     const response = await this.dbconn.getAccessKeys(group_id);
@@ -42,6 +44,7 @@ const postAccessKey = async function(req, res) {
         res.status(400).send({
             "error": "missing access key data in request body"
         });
+        return;
     }
 
     const response = await this.dbconn.postAccessKey(group_id, app_id, secret);
@@ -58,6 +61,7 @@ const deleteAccessKey = async function(req, res) {
         res.status(400).send({
             "error": "missing app id in request params"
         });
+        return;
     }
 
     const response = await this.dbconn.deleteAccessKey(app_id);
