@@ -6,7 +6,7 @@ const getOrganization = async function(req, res){
         });
         return;
     }
-    const response = await this.dbconn.getOrganization(req.body.name);
+    const response = await this.dbconn.getOrganization(req.params.name);
     res.status(200).send(response);
 };
 

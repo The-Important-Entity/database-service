@@ -1,7 +1,6 @@
 'use strict';
 const express = require("express");
 const DBConnector = require("./dbconnector");
-const bodyParser = require("body-parser");
 
 const {getOrganization, postOrganization, deleteOrganization} = require("./routes/organization.js");
 const {getSecurityGroups, postSecurityGroup, updateSecurityGroup, deleteSecurityGroup} = require("./routes/security_groups.js");
@@ -12,7 +11,7 @@ const {getAllNamespaces, postNamespace, deleteNamespace} = require("./routes/nam
 class Router {
     constructor(config) {
         this.app = express();
-        this.app.use(bodyParser.json());
+        this.app.use(express.json());
         this.app.use(express.urlencoded({extended: false}));
         this.port = config.PORT;
         this.dbconn = new DBConnector(config.HOST, config.DB_PORT, config.DB_USER, config.DB_PASS, config.DB);

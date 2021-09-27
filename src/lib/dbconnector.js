@@ -11,6 +11,10 @@ class DBConnector {
             "port": port,
         });
 
+        this.client.on('error', e => {
+            throw e;
+        });
+
         this.client.connect();
     }
 
