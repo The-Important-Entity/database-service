@@ -84,7 +84,9 @@ class DBConnector {
         return await this.makeQuery("DELETE FROM organization.namespaces WHERE organization.namespaces.name=$1", [name]);
     }
 
-    async getAccessKeys()
+    async getAccessKeys() {
+        return;
+    }
 
     close(){
         this.client.end();
