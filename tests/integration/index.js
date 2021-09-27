@@ -1,5 +1,6 @@
 'use strict';
 const axios = require("axios");
+const { request } = require("express");
 
 Array.prototype.equals = function (arr) {
     return this.length == arr.length && this.every((u, i) => u === arr[i]);
@@ -64,6 +65,28 @@ const run_tests = async function(tester, requester) {
     });
     info = "Test POST namespace when organization exists and namespace already exists";
     tester.assert(info, res, 'Error: unique key violation');
+
+    res = await requester.get("http://localhost:6000/security_group/1");
+    info = "Test GET security group when organization exists and no security groups exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true)
+    
+    res = await requester.delete("http://localhost:6000/security_group/1");
+    info = "Test DELETE security group when organization exists and no security groups exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true)
+
+    res = await requester.post("http://localhost:6000/security_group", {
+        "org_id": 1,
+        "alias": "newgroup"
+    });
+    info = "Test POST security group when organization exists and no security groups exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{"id": 1,"org_id": 1,"alias": "newgroup"}]), true)
+
+    res = await requester.put("http://localhost:6000/security_group", {
+        "group_id": 1,
+        "alias": "newgroup1234"
+    });
+    info = "Test PUT security group when organization exists and security groups exists";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{"id": 1,"org_id": 1,"alias": "newgroup1234"}]), true)
 
     res = await requester.delete("http://localhost:6000/organization/tech-solutions");
     info = "Test DELETE organization when organization exists";

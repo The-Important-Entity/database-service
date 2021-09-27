@@ -49,15 +49,15 @@ class DBConnector {
     // }
 
     async postSecurityGroup(org_id, alias) {
-        return await this.makeQuery("INSERT INTO organization.security_groups(org_id, alias) VALUES ($1, $2)", [org_id, alias]);
+        return await this.makeQuery("INSERT INTO organization.security_groups(org_id, alias) VALUES ($1, $2) RETURNING *", [org_id, alias]);
     }
 
     async updateSecurityGroup(group_id, alias) {
-        return await this.makeQuery("UPDATE organization.security_groups SET organization.security_groups.alias=$2 WHERE organization.security_groups.id=$1", [group_id, alias]);
+        return await this.makeQuery("UPDATE organization.security_groups SET alias=$2 WHERE organization.security_groups.id=$1 RETURNING *", [group_id, alias]);
     }
 
     async deleteSecurityGroup(group_id) {
-        return await this.makeQuery("DELETE FROM organization.security_groups WHERE organization.security_groups.id=$1", [group_id]);
+        return await this.makeQuery("DELETE FROM organization.security_groups WHERE organization.security_groups.id=$1 RETURNING *", [group_id]);
     }
 
     async getSecurityPerms(group_id) {
