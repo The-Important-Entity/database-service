@@ -153,6 +153,46 @@ const run_tests = async function(tester, requester) {
         "write_perm": 1
     }]), true);
 
+    res = await requester.get("http://localhost:6000/access_key/1")
+    info = "Test GET access keys when no access keys exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true);
+
+    res = await requester.delete("http://localhost:6000/access_key/1234321")
+    info = "Test DELETE access keys when no access keys exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([]), true);
+
+    res = await requester.post("http://localhost:6000/access_key", {
+        "group_id": 1,
+        "app_id": "abwirbgasubg3b42b5",
+        "secret": "supersecretstring"
+    });
+    info = "Test POST access key when no access keys exist";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "id": 1,
+        "group_id": 1,
+        "app_id": "abwirbgasubg3b42b5",
+        "secret": 'supersecretstring'
+    }]), true)
+
+    res = await requester.get("http://localhost:6000/access_key/1")
+    info = "Test GET access keys when access keys exists";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "id": 1,
+        "group_id": 1,
+        "app_id": "abwirbgasubg3b42b5"
+    }]), true);
+
+    res = await requester.post("http://localhost:6000/secret_key", {
+        "app_id": "abwirbgasubg3b42b5",
+        "namespace":"joe-namespace"
+    });
+    info = "Test Getting secret key with permissions";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "group_id": 1,
+        "secret": 'supersecretstring',
+        "read_perm": 0,
+        "write_perm": 1
+    }]), true)
 
 
 
@@ -164,13 +204,13 @@ const run_tests = async function(tester, requester) {
 
 
 
-
-
-
-
-
-
-
+    res = await requester.delete("http://localhost:6000/access_key/abwirbgasubg3b42b5");
+    info = "Test DELETE access key when access key exists";
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{
+        "id": 1,
+        "group_id": 1,
+        "app_id": "abwirbgasubg3b42b5"
+    }]), true)
 
     res = await requester.delete("http://localhost:6000/security_perm/1")
     info = "Test DELETE security perms when security perms exist";

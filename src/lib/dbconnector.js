@@ -97,7 +97,7 @@ class DBConnector {
     }
 
     async deleteAccessKey(app_id) {
-        return await this.makeQuery("DELETE FROM organization.access_keys WHERE organization.access_keys.app_id=$1 RETURNING *", [app_id]);
+        return await this.makeQuery("DELETE FROM organization.access_keys WHERE organization.access_keys.app_id=$1 RETURNING id, group_id, app_id", [app_id]);
     }
 
     close(){
