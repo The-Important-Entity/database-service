@@ -30,9 +30,9 @@ class Router {
         this.app.put("/security_perm", updateSecurityPerm.bind(this));
         this.app.delete("/security_perm", deleteSecurityPerm.bind(this));
 
-        this.app.get("/namespace", getAllNamespaces.bind(this));
-        this.app.put("/namespace", postNamespace.bind(this));
-        this.app.delete("/namespace", deleteNamespace.bind(this));
+        this.app.get("/namespace/:org_id", getAllNamespaces.bind(this));
+        this.app.post("/namespace", postNamespace.bind(this));
+        this.app.delete("/namespace/:name", deleteNamespace.bind(this));
 
         // this.app.get("/access_key", getSecret.bind(this));
         // this.app.put("/access_key", putAccessKey.bind(this));

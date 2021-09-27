@@ -33,7 +33,7 @@ class DBConnector {
     }
 
     async postOrganization(name) {
-        return await this.makeQuery("INSERT INTO organization.organization(name) VALUES ($1)", [name]);
+        return await this.makeQuery("INSERT INTO organization.organization(name) VALUES ($1) RETURNING *", [name]);
     }
 
     async deleteOrganization(name) {
@@ -81,7 +81,7 @@ class DBConnector {
     }
 
     async postNamespace(org_id, name) {
-        return await this.makeQuery("INSERT INTO organization.namespaces(org_id, name) VALUES ($1, $2)", [org_id, name]);
+        return await this.makeQuery("INSERT INTO organization.namespaces(org_id, name) VALUES ($1, $2) RETURNING *", [org_id, name]);
     }
 
     async deleteNamespace(name) {
