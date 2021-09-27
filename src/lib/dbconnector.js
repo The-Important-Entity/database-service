@@ -33,7 +33,7 @@ class DBConnector {
     }
 
     async deleteOrganization(name) {
-        return await this.makeQuery("DELETE FROM organization.organization WHERE organization.organization.name=$1", [name]);
+        return await this.makeQuery("DELETE FROM organization.organization WHERE organization.organization.name=$1 RETURNING *", [name]);
     }
 
     async getAllSecurityGroups(name) {
