@@ -20,10 +20,10 @@ class Router {
         this.app.post("/organization", postOrganization.bind(this));
         this.app.delete("/organization/:name", deleteOrganization.bind(this));
 
-        this.app.get("/security_group", getSecurityGroups.bind(this));
+        this.app.get("/security_group/:org_id", getSecurityGroups.bind(this));
         this.app.post("/security_group", postSecurityGroup.bind(this));
         this.app.put("/security_group", updateSecurityGroup.bind(this));
-        this.app.delete("/security_group", deleteSecurityGroup.bind(this));
+        this.app.delete("/security_group/:id", deleteSecurityGroup.bind(this));
 
         this.app.get("/security_perm", getSecurityPerms.bind(this));
         this.app.post("/security_perm", postSecurityPerm.bind(this));

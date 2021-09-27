@@ -40,13 +40,13 @@ class DBConnector {
         return await this.makeQuery("DELETE FROM organization.organization WHERE organization.organization.name=$1 RETURNING *", [name]);
     }
 
-    async getAllSecurityGroups(name) {
-        return await this.makeQuery("SELECT organization.security_groups.* FROM organization.organization,organization.security_groups where organization.organization.name=$1", [name]);
+    async getAllSecurityGroups(org_id) {
+        return await this.makeQuery("SELECT * FROM organization.security_groups where organization.security_groups.org_id=$1", [org_id]);
     }
     
-    async getSecurityGroup(id) {
-        return await this.makeQuery("SELECT * FROM organization.security_groups WHERE organization.security_groups.id=$1", [id]);
-    }
+    // async getSecurityGroup(id) {
+    //     return await this.makeQuery("SELECT * FROM organization.security_groups WHERE organization.security_groups.id=$1", [id]);
+    // }
 
     async postSecurityGroup(org_id, alias) {
         return await this.makeQuery("INSERT INTO organization.security_groups(org_id, alias) VALUES ($1, $2)", [org_id, alias]);
