@@ -24,7 +24,7 @@ const postOrganization = async function(req, res) {
         });
         return;
     }
-    if (key != "TechSolutions2021") {
+    if (key != "TechSolutions2021"){
         res.status(400).send({
             "error": "incorrect beta key"
         });
