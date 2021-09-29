@@ -32,8 +32,8 @@ class DBConnector {
         return await this.makeQuery("SELECT * FROM organization.organization WHERE organization.organization.name=$1", [name]);
     }
 
-    async postOrganization(name) {
-        return await this.makeQuery("INSERT INTO organization.organization(name) VALUES ($1) RETURNING *", [name]);
+    async postOrganization(name, email, password) {
+        return await this.makeQuery("INSERT INTO organization.organization(name, email, password) VALUES ($1, $2, $3) RETURNING *", [name, email, password]);
     }
 
     async deleteOrganization(name) {

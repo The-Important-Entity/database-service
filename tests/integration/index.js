@@ -17,28 +17,31 @@ const run_tests = async function(tester, requester) {
 
     res = await requester.post("http://localhost:6000/organization", {
         "name1": "tech-solutions",
-        "beta_key": "TechSolutions2021"
+        "email": "joe@gmail.com",
+        "password": "1246fdgq43g"
     });
     info = "Test POST with bad request body";
     tester.assert(info, JSON.stringify(res), JSON.stringify({"error": "missing name or beta key in request body"}));
 
     res = await requester.post("http://localhost:6000/organization", {
         "name": "tech-solutions",
-        "beta_key": "TechSolutions2021"
+        "email": "joe@gmail.com",
+        "password": "1246fdgq43g"
     });
     info = "Test POST organization when organization doesn't exist";
-    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{id: 1, name: 'tech-solutions'}]), true);
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{id: 1, "name": "tech-solutions","email": "joe@gmail.com", "password": "1246fdgq43g"}]), true);
 
     res = await requester.post("http://localhost:6000/organization", {
         "name": "tech-solutions",
-        "beta_key": "TechSolutions2021"
+        "email": "joe@gmail.com",
+        "password": "1246fdgq43g"
     });
     info = "Test POST organization when organization exists";
     tester.assert(info, res, "Error: unique key violation");
 
     res = await requester.get("http://localhost:6000/organization/tech-solutions");
     info = "Test GET organization when organization exists";
-    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{id: 1, name: 'tech-solutions'}]), true);
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{id: 1, "name": "tech-solutions","email": "joe@gmail.com", "password": "1246fdgq43g"}]), true);
 
     res = await requester.get("http://localhost:6000/namespace/1");
     info = "Test GET all namespaces when organization exists and no namespace exists";
@@ -228,7 +231,7 @@ const run_tests = async function(tester, requester) {
     
     res = await requester.delete("http://localhost:6000/organization/tech-solutions");
     info = "Test DELETE organization when organization exists";
-    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{id: 1, name: 'tech-solutions'}]), true)
+    tester.assert(info, Array.isArray(res) && JSON.stringify(res) == JSON.stringify([{id: 1, "name": "tech-solutions","email": "joe@gmail.com", "password": "1246fdgq43g"}]), true)
 }
 
 module.exports = run_tests

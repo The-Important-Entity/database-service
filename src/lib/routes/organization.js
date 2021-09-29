@@ -17,19 +17,16 @@ const getOrganization = async function(req, res){
 
 const postOrganization = async function(req, res) {
     const name = req.body.name;
-    const key = req.body.beta_key;
-    if (!name || !key) {
+    const email = req.body.email;
+    const password = req.body.password;
+    
+    if (!name || !email || !password) {
         res.status(400).send({
             "error": "missing name or beta key in request body"
         });
         return;
     }
-    if (key != "TechSolutions2021"){
-        res.status(400).send({
-            "error": "incorrect beta key"
-        });
-    }
-    const response = await this.dbconn.postOrganization(name);
+    const response = await this.dbconn.postOrganization(name, email, password);
     if (response.code) {
         res.status(500).send(this.processErrorCode(response.code));
         return;
