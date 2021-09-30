@@ -1,7 +1,7 @@
 
-const getNamespacesByKey = async function(req, res) {
-    const temp;
-}
+// const getNamespacesByKey = async function(req, res) {
+//     const temp;
+// }
 
 const postNamespaceInSecurityGroup = async function(req, res) {
     const group_id = req.body.org_id;
@@ -38,4 +38,4 @@ const postNamespaceInSecurityGroup = async function(req, res) {
 }
 
 
-module.exports = {postNamespaceInSecurityGroup, getNamespacesByKey};
+module.exports = {postNamespaceInSecurityGroup};
