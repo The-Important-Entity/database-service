@@ -61,7 +61,7 @@ class Router {
     start() {
         try {
             this.server = this.app.listen(this.port, function(){
-                console.log("Auth Service listening on port " + this.port.toString());
+                console.log("Database Service listening on port " + this.port.toString());
             }.bind(this));
         }
         catch(err) {

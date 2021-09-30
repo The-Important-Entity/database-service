@@ -28,7 +28,7 @@ const postNamespaceInSecurityGroup = async function(req, res) {
         return;
     }
 
-    const step2 = await this.dbcon.postSecurityPerm(group_id, namespace)
+    const step2 = await this.dbcon.postSecurityPerm(group_id, namespace, 1, 1);
     if (step2.code) {
         await this.dbconn.deleteNamespace(namespace);
         res.status(500).send(this.processErrorCode(step2.code));
