@@ -4,18 +4,30 @@ const getSecret = async function(req, res) {
     const app_id = req.body.app_id;
     const namespace = req.body.namespace;
 
-    if (!app_id || !namespace) {
+    if (!app_id) {
         res.status(400).send({
-            "error": "missing app_id or namespace in request body"
+            "error": "missing app_id in request body"
         });
         return;
     }
-    const response = await this.dbconn.getSecret(app_id, namespace);
-    if (response.code) {
-        res.status(500).send(this.processErrorCode(response.code));
-        return;
+
+    if (!namespace) {
+        const response = await this.dbconn.getSecretWithoutNamespace(app_id);
+        if (response.code) {
+            res.status(500).send(this.processErrorCode(response.code));
+            return;
+        }
+        res.status(200).send(response);
     }
-    res.status(200).send(response);
+    else {
+        const response = await this.dbconn.getSecret(app_id, namespace);
+        if (response.code) {
+            res.status(500).send(this.processErrorCode(response.code));
+            return;
+        }
+        res.status(200).send(response);
+    }
+
 };
 
 const getAccessKeys = async function(req, res) {
@@ -34,6 +46,23 @@ const getAccessKeys = async function(req, res) {
     }
     res.status(200).send(response);
 };
+
+const getAppId = async function(req, res) {
+    const app_id = req.params.app_id;
+    if (!app_id) {
+        res.status(400).send({
+            "error": "missing group id in request body"
+        });
+        return;
+    }
+
+    const response = await this.dbconn.getAppId(app_id);
+    if (response.code) {
+        res.status(500).send(this.processErrorCode(response.code));
+        return;
+    }
+    res.status(200).send(response);
+}
 
 const postAccessKey = async function(req, res) {
     const group_id = req.body.group_id;
@@ -74,4 +103,4 @@ const deleteAccessKey = async function(req, res) {
 
 
 
-module.exports = {getSecret, getAccessKeys, postAccessKey, deleteAccessKey};
+module.exports = {getSecret, getAppId, getAccessKeys, postAccessKey, deleteAccessKey};

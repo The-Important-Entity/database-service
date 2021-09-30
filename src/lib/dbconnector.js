@@ -44,6 +44,10 @@ class DBConnector {
         return await this.makeQuery("SELECT * FROM organization.security_groups where organization.security_groups.org_id=$1", [org_id]);
     }
 
+    async getSecurityGroup(group_id) {
+        return await this.makeQuery("SELECT * FROM organization.security_groups where organization.security_groups.id=$1", [group_id]);
+    }
+
     async postSecurityGroup(org_id, alias) {
         return await this.makeQuery("INSERT INTO organization.security_groups(org_id, alias) VALUES ($1, $2) RETURNING *", [org_id, alias]);
     }
@@ -88,8 +92,16 @@ class DBConnector {
         return await this.makeQuery("SELECT organization.access_keys.id, organization.access_keys.group_id, organization.access_keys.app_id FROM organization.access_keys WHERE organization.access_keys.group_id=$1", [group_id]);
     }
 
+    async getAppId(app_id) {
+        return await this.makeQuery("SELECT organization.access_keys.id, organization.access_keys.group_id, organization.access_keys.app_id FROM organization.access_keys WHERE organization.access_keys.app_id=$1", [app_id]);
+    }
+
     async getSecret(app_id, namespace) {
         return await this.makeQuery("SELECT organization.access_keys.group_id,organization.access_keys.secret, organization.security_perms.read_perm, organization.security_perms.write_perm FROM organization.access_keys, organization.security_perms WHERE organization.access_keys.app_id=$1 AND organization.access_keys.group_id=organization.security_perms.group_id AND organization.security_perms.namespace=$2", [app_id, namespace]);
+    }
+
+    async getSecretWithoutNamespace(app_id) {
+        return await this.makeQuery("SELECT organization.security_groups.org_id,organization.access_keys.group_id,organization.access_keys.secret FROM organization.security_groups,organization.access_keys WHERE organization.access_keys.app_id=$1 AND organization.security_groups.id=organization.access_keys.group_id", [app_id]);
     }
 
     async postAccessKey(group_id, app_id, secret) {

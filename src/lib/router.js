@@ -6,8 +6,8 @@ const {getOrganization, postOrganization, deleteOrganization} = require("./route
 const {getSecurityGroups, postSecurityGroup, updateSecurityGroup, deleteSecurityGroup} = require("./routes/security_groups.js");
 const {getSecurityPerms, postSecurityPerm, updateSecurityPerm, deleteSecurityPerm} = require("./routes/security_perms.js");
 const {getAllNamespaces, postNamespace, deleteNamespace} = require("./routes/namespace.js");
-const {getSecret, getAccessKeys, postAccessKey, deleteAccessKey} = require("./routes/access_keys.js");
-
+const {getSecret, getAppId, getAccessKeys, postAccessKey, deleteAccessKey} = require("./routes/access_keys.js");
+const {postNamespaceInSecurityGroup} = require("./routes/compound.js");
 class Router {
     constructor(config) {
         this.app = express();
@@ -38,7 +38,12 @@ class Router {
         this.app.post("/access_key", postAccessKey.bind(this));
         this.app.delete("/access_key/:app_id", deleteAccessKey.bind(this));
 
+        this.app.get("/access_key/single/:app_id", getAppId.bind(this));
+
         this.app.post("/secret_key", getSecret.bind(this));
+
+        //this.app.post("/compound/namespaces", getNamespacesByKey.bind(this));
+        this.app.post("/namespace/security_group", postNamespaceInSecurityGroup.bind(this));
 
         this.test_appid = new RegExp('^[A-Z0-9]{50,}$')
     }
