@@ -51,7 +51,7 @@ const getAppId = async function(req, res) {
     const app_id = req.params.app_id;
     if (!app_id) {
         res.status(400).send({
-            "error": "missing group id in request body"
+            "error": "missing app id in request body"
         });
         return;
     }

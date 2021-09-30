@@ -16,7 +16,7 @@ const postNamespaceInSecurityGroup = async function(req, res) {
 
     const group = await this.dbconn.getSecurityGroup(group_id);
     if (group.code) {
-        res.status(500).send(this.processErrorCode(response.code));
+        res.status(500).send(this.processErrorCode(group.code));
         return;
     }
 
@@ -24,14 +24,14 @@ const postNamespaceInSecurityGroup = async function(req, res) {
 
     const step1 = await this.dbconn.postNamespace(org_id, namespace);
     if (step1.code) {
-        res.status(500).send(this.processErrorCode(response.code));
+        res.status(500).send(this.processErrorCode(step1.code));
         return;
     }
 
     const step2 = await this.dbcon.postSecurityPerm(group_id, namespace)
     if (step2.code) {
         await this.dbconn.deleteNamespace(namespace);
-        res.status(500).send(this.processErrorCode(response.code));
+        res.status(500).send(this.processErrorCode(step2.code));
         return;
     }
     res.status(200).send(step1);
