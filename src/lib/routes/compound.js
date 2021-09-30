@@ -4,7 +4,7 @@
 // }
 
 const postNamespaceInSecurityGroup = async function(req, res) {
-    const group_id = req.body.org_id;
+    const group_id = req.body.group_id;
     const namespace = req.body.namespace;
 
     if (!group_id || !namespace) {
