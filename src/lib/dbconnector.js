@@ -93,7 +93,7 @@ class DBConnector {
     }
 
     async getAccessKeysWithOrg(org_id) {
-        return await this.makeQuery("SELECT organization.access_keys.id, organization.access_keys.group_id, organization.access_keys.app_id FROM organization.access_keys WHERE organization.access_keys.org_id=$1", [org_id]);
+        return await this.makeQuery("SELECT organization.access_keys.id, organization.access_keys.group_id, organization.access_keys.app_id FROM organization.access_keys,organization.security_groups WHERE organization.security_groups.org_id=$1 AND organization.security_groups.id=organization.access_keys.group_id", [org_id]);
     }
 
     async getAppId(app_id) {
