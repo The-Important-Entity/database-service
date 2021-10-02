@@ -13,7 +13,7 @@ const getAccessKey = async function(req, res) {
         res.status(200).send(response);
     }
     else if (org_id) {
-        const response = await this.dbconn.getAccessKeys(group_id);
+        const response = await this.dbconn.getAccessKeysWithOrg(group_id);
         if (response.code) {
             res.status(500).send(this.processErrorCode(response.code));
             return;
