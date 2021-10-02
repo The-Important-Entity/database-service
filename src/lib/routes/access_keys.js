@@ -1,4 +1,39 @@
+const getAccessKey = async function(req, res) {
+    const group_id = req.query.group_id;
+    const org_id = req.query.org_id;
+    const app_id = req.query.app_id;
+    
 
+    if (group_id) {
+        const response = await this.dbconn.getAccessKeys(group_id);
+        if (response.code) {
+            res.status(500).send(this.processErrorCode(response.code));
+            return;
+        }
+        res.status(200).send(response);
+    }
+    else if (org_id) {
+        const response = await this.dbconn.getAccessKeys(group_id);
+        if (response.code) {
+            res.status(500).send(this.processErrorCode(response.code));
+            return;
+        }
+        res.status(200).send(response);
+    }
+    else if (app_id) {
+        const response = await this.dbconn.getAppId(app_id);
+        if (response.code) {
+            res.status(500).send(this.processErrorCode(response.code));
+            return;
+        }
+        res.status(200).send(response);
+    }
+    else {
+        res.status(400).send({
+            "error": "missing request query"
+        });
+    }
+};
 
 const getSecret = async function(req, res) {
     const app_id = req.body.app_id;
@@ -103,4 +138,4 @@ const deleteAccessKey = async function(req, res) {
 
 
 
-module.exports = {getSecret, getAppId, getAccessKeys, postAccessKey, deleteAccessKey};
+module.exports = {getAccessKey, getSecret, postAccessKey, deleteAccessKey};

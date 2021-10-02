@@ -6,7 +6,7 @@ const {getOrganization, postOrganization, deleteOrganization} = require("./route
 const {getSecurityGroups, postSecurityGroup, updateSecurityGroup, deleteSecurityGroup} = require("./routes/security_groups.js");
 const {getSecurityPerms, postSecurityPerm, updateSecurityPerm, deleteSecurityPerm} = require("./routes/security_perms.js");
 const {getAllNamespaces, postNamespace, deleteNamespace} = require("./routes/namespace.js");
-const {getSecret, getAppId, getAccessKeys, postAccessKey, deleteAccessKey} = require("./routes/access_keys.js");
+const {getSecret, getAccessKey, postAccessKey, deleteAccessKey} = require("./routes/access_keys.js");
 const {postNamespaceInSecurityGroup} = require("./routes/compound.js");
 class Router {
     constructor(config) {
@@ -34,11 +34,9 @@ class Router {
         this.app.post("/namespace", postNamespace.bind(this));
         this.app.delete("/namespace/:name", deleteNamespace.bind(this));
 
-        this.app.get("/access_key/:group_id", getAccessKeys.bind(this));
+        this.app.get("/access_key", getAccessKey.bind(this));
         this.app.post("/access_key", postAccessKey.bind(this));
         this.app.delete("/access_key/:app_id", deleteAccessKey.bind(this));
-
-        this.app.get("/access_key/single/:app_id", getAppId.bind(this));
 
         this.app.post("/secret_key", getSecret.bind(this));
 
